@@ -6,8 +6,28 @@
 </head>
 <body>
 
-<h1>Gra</h1>
+<h1>ThE bEsT gAmE eVeR</h1>
+
+            {% if place %}
+                'place:': {{ place }}
+            {% endif %}
+            <br>
+            {% if ways %}
+                'outgoing ways:': {{ ways }}
+            {% endif %}
+	    <br>
+            {% if way_list %}
+                <ol>
+		{% for way in way_list %}
+			<li>{{ way }}</li>
+		{% endfor %}
+		</ol>
+            {% endif %}
+
+
+<footer>
 <h3>Wersja 1.0, Autor: Xaduex</h3>
+</footer>
 
 </body>
 </html>
