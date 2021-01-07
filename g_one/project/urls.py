@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from game_app.views import GameAppView
+from game_app.views import GameAppView, GameAppViewGo
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', GameAppView.as_view()),
+    path('go/<int:way_id>/', GameAppViewGo.as_view()),
 ]

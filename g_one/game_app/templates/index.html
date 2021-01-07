@@ -19,7 +19,12 @@
             {% if way_list %}
                 <ol>
 		{% for way in way_list %}
-			<li>{{ way }}</li>
+		<li>
+			{{ way.description }} 
+			<form action="/go/{{ way.id }}/" method="post"> 
+				<input type="submit" value="Go">
+			</form>
+		</li>
 		{% endfor %}
 		</ol>
             {% endif %}
@@ -31,3 +36,4 @@
 
 </body>
 </html>
+
