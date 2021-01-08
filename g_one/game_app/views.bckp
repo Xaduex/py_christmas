@@ -7,29 +7,43 @@ from .models import Place, Way
 @method_decorator(csrf_exempt, name='dispatch')
 class GameAppView(View):
     def get(self, request):
+        print('poczatek', request.session)
         if "current_place" not in request.session:
             place = Place.objects.all().order_by('description')[0].id
             request.session["current_place"] = place
             request.session["money"] = 0
+            print('default place', request.session.get("current_place"))
         else:
             place = request.session.get("current_place")
+            print('new place session', request.session.get("current_place"))
+            print('new place', place)
         ow =  Place.objects.get(id=place)
         desc = ow.description
         dsc = Way.objects.all()
         ways = ow.outgoiing_ways.all().values_list('description')
+        print('ways out', ways)
         way_all_list = []
         cash = request.session.get("money")
+        print('kasa', cash)
         for way in dsc:
             way_list = []
             way_list.append(way.description)
             way_list.append(way.id)
             if cash < way.cost:
                 way_list.append(0)
+                print(way_list)
             else:
                 way_list.append("")
+                print(way_list)
             way_list.append(way.cost)
             way_list.append(way.gain)
             way_all_list.append(way_list)
+        #new_ways = (dsc, way_status)
+        #zip_ways = zip(dsc, way_status)
+        #print('new_ways', new_ways[0][3].description, new_ways[0][3].id, new_ways[1][0])
+        #dictionary = {"w1": ("opis_1", "opis_2"), "w2": ("opis_3", "opis_4"), "status": "on"}
+        #list_of_tup = [["opis_1", "opis_2"], ["opis_3", "opis_4"], ["opis_5", "opis_6"]]
+        #print(list_of_tup)
         context = {'place': desc, 'ways': ways, 'way_list': dsc, 'cash': cash, 'wal': way_all_list }
         return render(request, 'index.html', context)
 
@@ -37,20 +51,26 @@ class GameAppView(View):
 class GameAppViewGo(View):
     def post(self, request, way_id):
         wid = request.POST.get('way_id')
+        print('id_drogi', way_id)
         pid = request.session.get("current_place")
+        print('aktualne miejsce', pid)
         p = Place.objects.get(id=pid)
+        print('aktualne miejsce z bazy', p)
         pw = p.outgoiing_ways.all()
         for way in pw:
             if way_id == way.id:
+                print(way.id)
                 if request.session.get("money") >= way.cost:
                     request.session["current_place"] = way.destination.id
                     request.session["money"] -= way.cost
                     request.session["money"] += way.gain
                 else:
                     redirect('/')
+                    #request.session["current_place"] = Place.objects.all().order_by('description')[0].id
                 print('nowe miejsce', request.session.get("current_place"))
         return redirect('/')
 
+#class SetCookieCurrentPlace(View):
 
 
 

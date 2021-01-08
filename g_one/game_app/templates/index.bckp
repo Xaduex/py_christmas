@@ -7,6 +7,7 @@
 <body>
 
 <h1>ThE bEsT gAmE eVeR</h1>
+
             {% if place %}
                 'place:': {{ place }}
             {% endif %}
@@ -15,18 +16,33 @@
                 'outgoing ways:': {{ ways }}
             {% endif %}
 	    <br>
-	    'kasa:': {{ cash }}
 	    {% if cash %}
 		'kasa:': {{ cash }}
-	    {% endif %}
+		{% endif %}
 	    <br>
+	    
+	    <!--{% if way_list %}
+                <ol>
+		{% for way in way_list %}
+		<li>
+			{{ way.description }}
+			<form action="/go/{{ way.id }}/" method="post">
+				{% if dis == 0 %}
+				<input type="submit" value="Go" disable>
+				{% else %}
+				<input type="submit" value="Go">
+				{% endif %}
+			</form>
+		</li>
+		{% endfor %}
+		</ol>
+		{% endif %}
+	    -->
 
 	    {% if wal %}
                 <ol>
                 {% for way in wal %}
                 <li>
-			<span class="cost">-${{way.3}}</span><br> 
-			<span class="gain">+${{way.4}}</span><br>
                         {{ way.0}}
                         <form action="/go/{{ way.1}}/" method="post">
 				{% if way.2 == 0 %}
